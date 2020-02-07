@@ -43,13 +43,22 @@
       <center>
         <div class="btn-group btn-group-lg" role="group">
           <button type="button" onclick="rock()" class="btn btn-info">Rock</button>
-          <button type="button" onclick="paper()" class="btn btn-info">Papper</button>
+          <button type="button" onclick="paper()" class="btn btn-info">Paper</button>
           <button type="button" onclick="scissors()" class="btn btn-info">Scissors</button>
         </div>
       </center>
     </div>
+    <div>
+      <center>
+        <p id="playerScore"></p>
+        <p id="computerScore"></p>
+      </center>
+    </div>
   </body>
   <script>
+    let playerScore = 0;
+    let computerScore = 0;
+
   	$(function(){});
  	var hand = ["rock","paper","scissors"];
   	
@@ -65,6 +74,23 @@
     $("#player").html("<i class='symbol far fa-hand-scissors'></i>");
     rockPaperScissors();
   }
+  function displayScores() {
+    if (playerScore == 5) {
+        document.getElementById('playerScore').innerHTML = "Winner!!!";
+        document.getElementById('computerScore').innerHTML = "Loser...";   
+        playerScore = 0;
+        computerScore = 0;
+    } else if (computerScore == 5) {
+        document.getElementById('playerScore').innerHTML = "Loser..."; 
+        document.getElementById('computerScore').innerHTML = "Winner!!!";
+        playerScore = 0;
+        computerScore = 0;
+    } else {
+        document.getElementById('playerScore').innerHTML = "Player Score: " + playerScore;
+        document.getElementById('computerScore').innerHTML = "Player Score: " + computerScore;
+    }
+  }
+
 	function rockPaperScissors() {
 	var symbol = arguments.callee.caller.name;
 	var cpuSymbol = hand[Math.floor(Math.random() * 3)];
@@ -73,14 +99,17 @@
 	    case "rock":
 	      $("#computer").html("<i class='symbol far fa-hand-rock'></i>");
 	      console.log(symbol == "scissors" ? denoteLoser() : symbol == "paper" ? denoteWinner() : denoteDraw());
+        displayScores();
 	      break;
 	    case "paper":
 	      $("#computer").html("<i class='symbol far fa-newspaper'></i>");
 	      console.log(symbol == "rock" ? denoteLoser() : symbol == "scissors" ? denoteWinner() : denoteDraw())
+        displayScores();
 	      break;
 	    case "scissors":
 	      $("#computer").html("<i class='symbol far fa-hand-scissors'></i>");
 	      console.log(symbol == "paper" ? denoteLoser() : symbol == "rock" ? denoteWinner() : denoteDraw())
+        displayScores();
 	      break;
 	  	}
   }
@@ -88,11 +117,13 @@
   	$("#result").html("<h1 class='alert alert-danger'>You Lost Loser!</h1>")
   	// console.log("You Lost Loser!");
   	// alert("You Lost Loser!");
+    computerScore++;
   }
   function denoteWinner() {
   	$("#result").html("<h1 class='alert alert-success'>Winner Winner, Chicken Dinner!</h1>")
   	// console.log("Winner Winner, Chicken Dinner!");
   	// alert("Winner Winner, Chicken Dinner!");
+    playerScore++;
   }
   function denoteDraw() {
   	$("#result").html("<h1 class='alert alert-danger'>Perfectly Balanced, as all things should be...</h1>")
